@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser
+from django.contrib.gis.db import models
 from django.db.models import CharField
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -15,6 +16,11 @@ class User(AbstractUser):
     name = CharField(_("Name of User"), blank=True, max_length=255)
     first_name = None  # type: ignore
     last_name = None  # type: ignore
+    name = CharField(_("Name of User"), blank=True, max_length=255)
+    home_address = models.CharField(_("Home Address"), blank=True, max_length=255)
+    phone_number = models.CharField(_("Phone Number"), blank=True, max_length=20)
+    location = models.PointField(_("Location"), blank=True, null=True)
+
 
     def get_absolute_url(self):
         """Get url for user's detail view.

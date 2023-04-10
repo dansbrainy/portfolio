@@ -24,6 +24,9 @@ class User(AbstractUser):
     profile_picture = models.ImageField(_("Profile Picture"), upload_to="profile_pics/", blank=True, null=True, default='default.jpg')
 
     def save(self, *args, **kwargs):
+        """
+        This function resizes a profile picture before saving it.
+        """
         """Override the save method to resize the profile picture before saving it"""
         super().save(*args, **kwargs)
 

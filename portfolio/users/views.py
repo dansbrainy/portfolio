@@ -20,7 +20,7 @@ user_detail_view = UserDetailView.as_view()
 
 class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = User
-    fields = ["name", "home_address", "location"]
+    fields = ["name", "home_address", "phone_number", "location"]
     success_message = _("Information successfully updated")
 
     def form_valid(self, form):

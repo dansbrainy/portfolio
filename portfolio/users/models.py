@@ -21,7 +21,14 @@ class User(AbstractUser):
     home_address = models.CharField(_("Home Address"), blank=True, max_length=255)
     phone_number = models.CharField(_("Phone Number"), blank=True, max_length=20)
     location = models.PointField(_("Location"), blank=True, null=True)
-    profile_picture = models.ImageField(_("Profile Picture"), upload_to="profile_pics/", blank=True, null=True, default='default.jpg')
+    profile_picture = models.ImageField(
+        _("Profile Picture"),
+        upload_to="profile_pics/",
+        blank=True,
+        null=True,
+        default="default.jpg",
+    )
+    bio = models.TextField(_("About Me"), blank=True, max_length=1000)
 
     def save(self, *args, **kwargs):
         """
@@ -37,7 +44,6 @@ class User(AbstractUser):
                 output_size = (300, 300)
                 img.thumbnail(output_size)
                 img.save(self.profile_picture.path)
-
 
     def get_absolute_url(self):
         """Get url for user's detail view.

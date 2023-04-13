@@ -11,3 +11,42 @@
   background-color: #f2dede;
   border-color: #eed3d7;
 }
+
+
+/* Profile picture (nav) */
+
+
+/* Dropdown nav */
+.dropdown-menu {
+  border: none;
+  border-radius: 0;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-item {
+  padding: 8px 16px;
+}
+
+.navbar {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+.navbar-brand {
+  font-size: 1.5rem  !important;
+  font-weight: bold  !important;
+}
+
+.navbar-nav .nav-link {
+  font-size: 1rem !important;
+  font-weight: bold !important;
+  color: rgba(0, 0, 0, 0.6) !important;
+  margin-left: 24px !important;
+}
+
+.navbar-nav .nav-link:hover {
+  color: rgba(0, 0, 0, 0.8) !important;
+}
+
+.navbar-nav .active>.nav-link {
+  color: #b94a48 !important;
+}

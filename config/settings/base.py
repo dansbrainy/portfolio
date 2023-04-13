@@ -81,10 +81,12 @@ THIRD_PARTY_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "leaflet",
 ]
 
 LOCAL_APPS = [
     "portfolio.users",
+    "portfolio.map",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

@@ -17,10 +17,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" integrity="sha512-GQGU0fMMi238uA+a/bdWJfpUGKUkBdgfFdgBm72SUQ6BeyWjoY/ton0tEjH+OSH9iP4Dfh+7HM0I9f5eR0L/4w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- Your stuff: Third-party CSS libraries go here -->
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css">
-
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="{% static 'leaflet/leaflet.css' %}" integrity="">
 
@@ -45,17 +41,58 @@
 
   </head>
 
-  <body id="page-top" data-bs-spy="scroll" data-bs-target="#mainNav" data-bs-offset="72">
+  <body>
 
-    <div class="" id="mainNav">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">Portfolio</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'home' %}">Home <span class="visually-hidden">(current)</span></a>
+            </li>
+            {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                  {# URL provided by django-allauth/account/urls.py #}
+                  <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% translate "My Profile" %}</a>
+                </li>
+                <li class="nav-item">
+                  {# URL provided by django-allauth/account/urls.py #}
+                  <a class="nav-link" href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'map:map' %}">Map</a>
+                </li>
+              {% else %}
+                {% if ACCOUNT_ALLOW_REGISTRATION %}
+              <li class="nav-item">
+                {# URL provided by django-allauth/account/urls.py #}
+                <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% translate "Sign Up" %}</a>
+              </li>
+              {% endif %}
+                <li class="nav-item">
+                  {# URL provided by django-allauth/account/urls.py #}
+                  <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
+                </li>
+              {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- <div class="mb-1">
       <nav class="navbar navbar-expand-md navbar-light bg-light">
         <div class="container-fluid">
-          <a class="navbar-brand" href="{% url 'home' %}">Portfolio</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav align-items-center">
+          <a class="navbar-brand" href="{% url 'home' %}">portfolio</a>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
                 <a class="nav-link" href="{% url 'home' %}">Home <span class="visually-hidden">(current)</span></a>
               </li>
@@ -63,39 +100,37 @@
                 <a class="nav-link" href="{% url 'about' %}">About</a>
               </li>
               {% if request.user.is_authenticated %}
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'map:map' %}">{% translate "Map" %}</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link profile-pic dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img src="{{ request.user.profile_picture.url }}" class="img-fluid rounded-circle profile-pic" alt="Profile Picture" height="40px" width="40px">
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a class="dropdown-item" href="{% url 'users:detail' request.user.username  %}">{% translate "My Profile" %}</a></li>
-                  <li><a class="dropdown-item" href="{% url 'users:update' %}">{% translate "Edit Profile" %}</a></li>
-                  <li><a class="dropdown-item" href="{% url 'account_email' %}">{% translate "Email Settings" %}</a></li>
-                  <li><a class="dropdown-item" href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a></li>
-                </ul>
-              </li>
+                <li class="nav-item">
+                  {# URL provided by django-allauth/account/urls.py #}
+                  <a class="nav-link" href="{% url 'users:detail' request.user.username  %}">{% translate "My Profile" %}</a>
+                </li>
+                <li class="nav-item">
+                  {# URL provided by django-allauth/account/urls.py #}
+                  <a class="nav-link" href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'map:map' %}">Map</a>
+                </li>
               {% else %}
-              <li class="nav-item">
                 {% if ACCOUNT_ALLOW_REGISTRATION %}
-                <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% translate "Sign Up" %}</a>
-                {% endif %}
-              </li>
               <li class="nav-item">
-                <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
+                {# URL provided by django-allauth/account/urls.py #}
+                <a id="sign-up-link" class="nav-link" href="{% url 'account_signup' %}">{% translate "Sign Up" %}</a>
               </li>
+              {% endif %}
+                <li class="nav-item">
+                  {# URL provided by django-allauth/account/urls.py #}
+                  <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
+                </li>
               {% endif %}
             </ul>
           </div>
         </div>
       </nav>
 
-    </div>
+    </div> -->
 
-
-    <div>
+    <div class="container">
 
       {% if messages %}
         {% for message in messages %}
@@ -119,7 +154,7 @@
     Script tags with only code, no src (defer by default). To run
     with a "defer" so that you run inline code:
     <script>
-      window.addEventListener('DOMContentLoaded', () => { /* run whatever you want */});
+      window.addEventListener('DOMContentLoaded', () => {/* Run whatever you want */});
     </script>
     {% endcomment %}
     {% endblock inline_javascript %}

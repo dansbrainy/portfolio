@@ -29,6 +29,7 @@ class User(AbstractUser):
         default="default.jpg",
     )
     bio = models.TextField(_("About Me"), blank=True, max_length=1000)
+    profession = models.CharField(_("Profession"), blank=True, max_length=40)
 
     def save(self, *args, **kwargs):
         """

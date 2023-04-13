@@ -1,111 +1,102 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}User: {{ object.username }}{% endblock %}
+{% block title %}{{ user.username }} | Portfolio{% endblock %}
+
 
 {% block content %}
-
-  <header class="text-center text-white bg-primary masthead">
-    <div class="container"><img class="img-fluid d-block rounded-circle profile-pic mx-auto mb-5" src="{{ request.user.profile_picture.url }}">
-        <h1>{{ request.user.name }}</h1>
-        <hr class="star-light">
-        <h2 class="font-weight-light mb-0">Web Developer - Graphic Artist - User Experience Designer</h2>
-    </div>
-  </header>
-
-  {% if request.user.projects %}
-  <section id="portfolio" class="portfolio">
+  <section id="show-section">
     <div class="container">
-        <h2 class="text-uppercase text-center text-secondary">Portfolio</h2>
-        <hr class="star-dark mb-5">
-        <div class="row">
-            <div class="col-md-6 col-lg-4"><a class="d-block mx-auto portfolio-item" href="#portfolio-modal-1" data-bs-toggle="modal">
-                <div class="d-flex portfolio-item-caption position-absolute h-100 w-100">
-                    <div class="text-center text-white my-auto portfolio-item-caption-content w-100"><i class="fa fa-search-plus fa-3x"></i></div>
-                </div><img class="img-fluid" src="assets/img/portfolio/cabin.png">
-                </a>
-            </div>
-            <div class="col-md-6 col-lg-4"><a class="d-block mx-auto portfolio-item" href="#portfolio-modal-2" data-bs-toggle="modal">
-                    <div class="d-flex portfolio-item-caption position-absolute h-100 w-100">
-                        <div class="text-center text-white my-auto portfolio-item-caption-content w-100"><i class="fa fa-search-plus fa-3x"></i></div>
-                    </div><img class="img-fluid" src="assets/img/portfolio/cake.png">
-                </a></div>
-            <div class="col-md-6 col-lg-4"><a class="d-block mx-auto portfolio-item" href="#portfolio-modal-3" data-bs-toggle="modal">
-                    <div class="d-flex portfolio-item-caption position-absolute h-100 w-100">
-                        <div class="text-center text-white my-auto portfolio-item-caption-content w-100"><i class="fa fa-search-plus fa-3x"></i></div>
-                    </div><img class="img-fluid" src="assets/img/portfolio/circus.png">
-                </a></div>
-            <div class="col-md-6 col-lg-4"><a class="d-block mx-auto portfolio-item" href="#portfolio-modal-4" data-bs-toggle="modal">
-                    <div class="d-flex portfolio-item-caption position-absolute h-100 w-100">
-                        <div class="text-center text-white my-auto portfolio-item-caption-content w-100"><i class="fa fa-search-plus fa-3x"></i></div>
-                    </div><img class="img-fluid" src="assets/img/portfolio/game.png">
-                </a></div>
-            <div class="col-md-6 col-lg-4"><a class="d-block mx-auto portfolio-item" href="#portfolio-modal-5" data-bs-toggle="modal">
-                    <div class="d-flex portfolio-item-caption position-absolute h-100 w-100">
-                        <div class="text-center text-white my-auto portfolio-item-caption-content w-100"><i class="fa fa-search-plus fa-3x"></i></div>
-                    </div><img class="img-fluid" src="assets/img/portfolio/safe.png">
-                </a></div>
-            <div class="col-md-6 col-lg-4"><a class="d-block mx-auto portfolio-item" href="#portfolio-modal-6" data-bs-toggle="modal">
-                    <div class="d-flex portfolio-item-caption position-absolute h-100 w-100">
-                        <div class="text-center text-white my-auto portfolio-item-caption-content w-100"><i class="fa fa-search-plus fa-3x"></i></div>
-                    </div><img class="img-fluid" src="assets/img/portfolio/submarine.png">
-                </a></div>
-        </div>
-    </div>
-  </section>
-  {% endif %}
-
-  {% if object.bio != "" %}
-  <section class="text-white bg-primary mb-0" id="about">
-      <div class="container">
-          <h2 class="text-uppercase text-center text-white">About</h2>
-          <hr class="star-light mb-5">
-          <div class="row">
-              <div class="col-lg-4 ms-auto">
-                  <p class="lead">{{ object.bio }}</p>
-              </div>
-              <div class="col-lg-4 me-auto">
-                  <p class="lead">Whether you're a student looking to showcase your work, a professional looking to attract clients, or a graphic artist looking to share your projects, this template is the perfect starting point!</p>
-              </div>
+      <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-12 mb-4">
+          <div class="card shadow">
+            {% if user.profile_picture %}
+              <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}" class="card-img-top">
+            {% else %}
+              <img src="{% static 'images/default_profile_picture.png' %}" alt="{{ user.username }}" class="card-img-top">
+            {% endif %}
           </div>
-          {% if request.user.projects %}
-          <div class="text-center mt-4"><a class="btn btn-outline-light btn-xl" role="button" href="#"><i class="fa fa-download me-2"></i><span>Download Now!</span></a></div>
-          {% endif %}
-        </div>
-  </section>
-  {% endif %}
-
-  <section id="contact">
-      <div class="container">
-          <h2 class="text-uppercase text-center text-secondary mb-0">Contact Me</h2>
-          <hr class="star-dark mb-5">
-          <div class="row">
-              <div class="col-lg-8 mx-auto">
-                  <form id="contactForm" name="sentMessage" novalidate="novalidate">
-                      <div class="control-group">
-                          <div class="mb-0 form-floating controls pb-2"><input class="form-control" type="text" id="name" required="" placeholder="Name"><label class="form-label">Name</label><small class="form-text text-danger help-block"></small></div>
-                      </div>
-                      <div class="control-group">
-                          <div class="mb-0 form-floating controls pb-2"><input class="form-control" type="email" id="email" required="" placeholder="Email Address"><label class="form-label">Email Address</label><small class="form-text text-danger help-block"></small></div>
-                      </div>
-                      <div class="control-group">
-                          <div class="mb-0 form-floating controls pb-2"><input class="form-control" type="tel" id="phone" required="" placeholder="Phone Number"><label class="form-label">Phone Number</label><small class="form-text text-danger help-block"></small></div>
-                      </div>
-                      <div class="control-group">
-                          <div class="mb-5 form-floating controls pb-2"><textarea class="form-control" id="message" required="" placeholder="Message" style="height: 150px;"></textarea><label class="form-label">Message</label><small class="form-text text-danger help-block"></small></div>
-                      </div>
-                      <div id="success"></div>
-                      <div><button class="btn btn-primary btn-xl" id="sendMessageButton" type="submit">Send</button></div>
-                  </form>
-              </div>
+          <div class="card-body">
+            <h5 class="card-title">{{ user.username }}</h5>
+            {% if user.bio %}
+              <p class="card-text">{{ user.bio }}</p>
+            {% endif %}
+            {% if user.profession %}
+              <p class="card-text">{{ user.profession }}</p>
+            {% endif %}
           </div>
+        </div>
       </div>
-  </section>
+      <div class="col-lg-9 col-md-8 col-sm-12 mb-4">
+        <div class="row">
+          {% for project in user.projects.all %}
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+              <div class="card h-100">
+                {% if project.image %}
+                  <img src="{{ project.image.url }}" alt="{{ project.title }}" class="card-img-top">
+                {% else %}
+                  <img src="{% static 'img/default_project_image.png' %}" alt="{{ project.title }}" class="card-img-top">
+                {% endif %}
+                <div class="card-body">
+                  <h5 class="card-title">{{ project.title }}</h5>
+                  <p class="card-text">{{ project.description }}</p>
+                </div>
+                <div class="card-footer">
+                  <a href="{{ project.url }}" class="btn btn-primary" target="_blank">View Project</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-8 col-sm-12 mx-auto">
+        <div class="card shadow">
+          <div class="card-body">
+            <h5 class="card-title">Contact</h5>
+            <form action="{% url 'users:send_email' %}" method="POST">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" name="name" class="form-control" id="name" required>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" required>
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+              </div>
+              <div class="mb-3">
+                <label for="subject" class="form-label">Subject</label>
+                <input type="text" name="subject" class="form-control" id="subject" required>
+              </div>
+              <div class="mb-3">
+                <label for="message" class="form-label">Message</label>
+                <textarea name="message" class="form-control" id="message" rows="3" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Send</button>
+            </form>
+            {% if email_sent %}
+              <div class="alert alert-success mt-3" role="alert">
+                Email sent successfully!
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
 
 {% if object == request.user %}
 <div class="row">
 
 <!-- End Action buttons -->
 {% endif %}
-
-{% endblock content %}

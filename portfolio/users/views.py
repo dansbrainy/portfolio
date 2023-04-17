@@ -58,7 +58,7 @@ class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def form_valid(self, form):
         project_formset = ProjectFormSet(
-            self.request.POST, self.request.FILES, instance=self.object
+            self.request.POST, self.request.FILES, instance=self.get_object()
         )
         if project_formset.is_valid():
             project_formset.save()
@@ -98,8 +98,9 @@ class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         )  # for mypy to know that the user is authenticated
         return self.request.user.get_absolute_url()
 
-    def get_object(self):
-        return self.request.user
+    def get_object(self, queryset=None):
+        queryset = queryset or self.get_queryset()
+        return queryset.get(pk=self.request.user.pk)
 
 
 user_update_view = UserUpdateView.as_view()

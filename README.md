@@ -6,11 +6,11 @@ Behold My Awesome Production-ready Project!
 This is a portfolio web application created with Django as a framework. The purpose of this application is to allow users to register and create profiles that include further details about the user, such as a home address, phone number, and location where they live.
 
 # Requirements
-- Django: 3.2.8
+- Django: 4.1.8
 - Python: > 3.10
 - PostgreSQL
 - Postgis Library (for PostgreSQL)
-- GIS (for Geocoding)
+- GDAL / GIS (for Geocoding)
 
 ## Features
 The application includes the following features:

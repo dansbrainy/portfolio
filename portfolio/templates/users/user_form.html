@@ -4,36 +4,43 @@
 {% block title %}{{ user.username }}{% endblock %}
 
 {% block content %}
-  <div class="container">
-    <div class="row">
-      <div class="col-md-4">
-        <div class="card mb-4 shadow-sm">
-          <div class="card-body">
-            <h4 class="card-title">{{ object.name }}</h4>
-            <p class="card-text">{{ object.profession }}</p>
-            {% if object.profile_picture %}
-              <img class="card-img-top" src="{{ object.profile_picture.url }}" alt="Profile picture">
-            {% endif %}
+  <section id="home-reho" class="jumbotron text-center">
+    <div class="container">
+      <h1>Edit your profile</h1>
+    </div>
+  </section>
+  <section>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+              <h4 class="card-title">{{ object.name }}</h4>
+              <p class="card-text">{{ object.profession }}</p>
+              {% if object.profile_picture %}
+                <img class="card-img-top" src="{{ object.profile_picture.url }}" alt="Profile picture">
+              {% endif %}
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-8">
-        <form method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          {{ form|crispy }}
-          {{ project_formset.management_form|crispy }}
-          {% for project_form in project_formset.forms %}
-            <div class="card mb-4 shadow-sm">
-              <div class="card-body">
-                {{ project_form|crispy }}
+        <div class="col-md-8">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            {{ project_formset.management_form|crispy }}
+            {% for project_form in project_formset.forms %}
+              <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                  {{ project_form|crispy }}
+                </div>
               </div>
+            {% endfor %}
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary">Save changes</button>
             </div>
-          {% endfor %}
-          <div class="form-group">
-            <button type="submit" class="btn btn-primary">Save changes</button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 {% endblock %}

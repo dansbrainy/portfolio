@@ -54,3 +54,10 @@ class UserAdmin(auth_admin.UserAdmin):
         if request.user.is_superuser:
             return qs
         return qs.filter(id=request.user.id)
+
+    def has_change_permission(self, request, obj=None):
+        if not obj:
+            return True
+        if request.user.is_superuser:
+            return True
+        return obj.id == request.user.id

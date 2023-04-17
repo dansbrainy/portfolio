@@ -11,7 +11,8 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView, View
 from geopy.exc import GeocoderTimedOut
-from projects.models import Project
+
+from portfolio.projects.models import Project
 
 User = get_user_model()
 

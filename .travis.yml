@@ -1,0 +1,17 @@
+language: python
+python:
+  - "3.10"
+services:
+  - postgresql
+addons:
+  postgresql: "14"
+env:
+  - DJANGO_SETTINGS_MODULE=portfolio.settings.test
+install:
+  - sudo apt-get update
+  - sudo apt-get install -y binutils libproj-dev gdal-bin
+  - pip install -r requirements/test.txt
+before_script:
+  - psql -c 'create database portfolio_test;' -U postgres
+script:
+  - python manage.py test

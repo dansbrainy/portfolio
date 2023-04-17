@@ -50,7 +50,8 @@ Moved to [settings](http://cookiecutter-django.readthedocs.io/en/latest/settings
 - Run the command python manage.py migrate to migrate the database.
 - Create a super user using the command python manage.py createsuperuser.
 - Run the command python manage.py runserver to start the development server.
-Usage
+
+### Usage
 - Log in to the Django admin page using the super user credentials.
 - Create new users and add their profile information.
 - Navigate to the map page to see all registered users' locations and their profile popups when clicked.

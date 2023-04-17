@@ -4,8 +4,9 @@ from django.contrib.auth import forms as admin_forms
 from django.contrib.auth import get_user_model
 from django.forms.models import inlineformset_factory
 from django.utils.translation import gettext_lazy as _
-from projects.forms import ProjectForm
-from projects.models import Project
+
+from portfolio.projects.forms import ProjectForm
+from portfolio.projects.models import Project
 
 User = get_user_model()
 

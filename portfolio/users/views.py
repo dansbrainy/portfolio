@@ -116,4 +116,4 @@ user_redirect_view = UserRedirectView.as_view()
 
 ProjectFormSet = inlineformset_factory(
     User, Project, fields=("title", "description", "image", "link"), extra=1
-)
+)  # type: ignore

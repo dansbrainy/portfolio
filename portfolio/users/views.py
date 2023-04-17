@@ -4,12 +4,10 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.gis.geos import Point
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.mail import send_mail
 from django.forms import inlineformset_factory
-from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import DetailView, RedirectView, UpdateView, View
+from django.views.generic import DetailView, RedirectView, UpdateView
 from geopy.exc import GeocoderTimedOut
 
 from portfolio.projects.models import Project
@@ -116,20 +114,6 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 user_redirect_view = UserRedirectView.as_view()
 
 
-class SendEmailView(View):
-    def post(self, request):
-        name = request.POST.get("name")
-        email = request.POST.get("email")
-        subject = request.POST.get("subject")
-        message = request.POST.get("message")
-        send_mail(subject, name, message, email, [email])
-        return HttpResponseRedirect(
-            reverse("users:detail", args=[request.user.username])
-        )
-
-
-send_email_view = SendEmailView.as_view()
-
 ProjectFormSet = inlineformset_factory(
-    User, Project, fields=("title", "description", "image", "link")
+    User, Project, fields=("title", "description", "image", "link"), extra=1
 )

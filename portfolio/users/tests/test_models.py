@@ -1,8 +1,7 @@
-from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-User = get_user_model()
+from portfolio.users.models import User
 
 
 def test_user_get_absolute_url(user: User):

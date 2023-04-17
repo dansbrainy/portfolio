@@ -57,3 +57,12 @@ class User(AbstractUser):
 
         """
         return reverse("users:detail", kwargs={"username": self.username})
+
+
+class UserProject(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    project = models.ForeignKey("projects.Project", on_delete=models.CASCADE)
+    date_joined = models.DateField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user", "project")

@@ -8,13 +8,30 @@ from portfolio.users.forms import UserAdminChangeForm, UserAdminCreationForm
 User = get_user_model()
 
 
+class UserProjectInline(admin.TabularInline):
+    model = User.projects.through
+
+
 @admin.register(User)
 class UserAdmin(auth_admin.UserAdmin):
+    inlines = [UserProjectInline]
     form = UserAdminChangeForm
     add_form = UserAdminCreationForm
     fieldsets = (
         (None, {"fields": ("username", "password")}),
-        (_("Personal info"), {"fields": ("name", "email")}),
+        (
+            _("Personal info"),
+            {
+                "fields": (
+                    "name",
+                    "email",
+                    "profile_picture",
+                    "profession",
+                    "projects",
+                    "home_address",
+                )
+            },
+        ),
         (
             _("Permissions"),
             {

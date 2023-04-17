@@ -82,6 +82,7 @@ THIRD_PARTY_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "leaflet",
+    "auditlog",
 ]
 
 LOCAL_APPS = [
@@ -144,7 +145,13 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "auditlog.middleware.AuditlogMiddleware",
 ]
+
+# AUDIT LOG
+AUDIT_LOG = {
+    "REGISTERED_MODELS": ["auth.user", "auth.group"],
+}
 
 # STATIC
 # ------------------------------------------------------------------------------

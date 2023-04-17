@@ -5,95 +5,133 @@
 
 
 {% block content %}
-  <section id="show-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-3 col-md-4 col-sm-12 mb-4">
-          <div class="card shadow">
-            {% if user.profile_picture %}
-              <img src="{{ user.profile_picture.url }}" alt="{{ user.username }}" class="card-img-top">
-            {% else %}
-              <img src="{% static 'images/default_profile_picture.png' %}" alt="{{ user.username }}" class="card-img-top">
-            {% endif %}
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">{{ user.username }}</h5>
-            {% if user.bio %}
-              <p class="card-text">{{ user.bio }}</p>
-            {% endif %}
-            {% if user.profession %}
-              <p class="card-text">{{ user.profession }}</p>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-9 col-md-8 col-sm-12 mb-4">
-        <div class="row">
-          {% for project in user.projects.all %}
-            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-              <div class="card h-100">
-                {% if project.image %}
-                  <img src="{{ project.image.url }}" alt="{{ project.title }}" class="card-img-top">
-                {% else %}
-                  <img src="{% static 'img/default_project_image.png' %}" alt="{{ project.title }}" class="card-img-top">
-                {% endif %}
-                <div class="card-body">
-                  <h5 class="card-title">{{ project.title }}</h5>
-                  <p class="card-text">{{ project.description }}</p>
-                </div>
-                <div class="card-footer">
-                  <a href="{{ project.url }}" class="btn btn-primary" target="_blank">View Project</a>
-                </div>
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="contact-section">
+<section id="hero-section">
   <div class="container">
     <div class="row">
-      <div class="col-lg-6 col-md-8 col-sm-12 mx-auto">
-        <div class="card shadow">
-          <div class="card-body">
-            <h5 class="card-title">Contact</h5>
-            <form action="{% url 'users:send_email' %}" method="POST">
-              {% csrf_token %}
-              <div class="mb-3">
-                <label for="name" class="form-label">Name</label>
-                <input type="text" name="name" class="form-control" id="name" required>
-              </div>
-              <div class="mb-3">
-                <label for="email" class="form-label">Email address</label>
-                <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" required>
-                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-              </div>
-              <div class="mb-3">
-                <label for="subject" class="form-label">Subject</label>
-                <input type="text" name="subject" class="form-control" id="subject" required>
-              </div>
-              <div class="mb-3">
-                <label for="message" class="form-label">Message</label>
-                <textarea name="message" class="form-control" id="message" rows="3" required></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary">Send</button>
-            </form>
-            {% if email_sent %}
-              <div class="alert alert-success mt-3" role="alert">
-                Email sent successfully!
-              </div>
-            {% endif %}
+      <div class="col-lg-6 col-md-8 col-sm-12 mx-auto text-center">
+        <h1><span id="hero-greeting"></span></h1>
+      </div>
+    </div>
+  </div>
+  <div class="arrow-down"></div>
+</section>
+
+<section id="profile-bio" style="background-color: #99cbdf; padding: 50px 0;">
+  <div class="container">
+    <div class="row justify-content-center align-items-center">
+      <div class="col-md-4 col-sm-12 mb-3 mb-md-0" id="picture" style="text-align: center;">
+        {% if user.profile_picture and user.profile_picture.url %}
+          <div class="wave-container rounded-circle mb-3" style="position: relative; overflow: hidden; width: 300px; height: 300px; margin: 0 auto;">
+            <div class="wave-overlay wave-orange" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: translateX(-100%);"></div>
+            <img class="img-fluid rounded-circle mb-3 profile-pic" src="{{ user.profile_picture.url }}" alt="{{ user.username }}" width="300" style="position: relative; z-index: 2;">
           </div>
-        </div>
+        {% endif %}
+      </div>
+      <div class="col-md-4 col-sm-12" id="bio">
+        {% if user.bio %}
+          <h2 style="font-size: 28px; font-weight: bold; margin-bottom: 30px; text-align: center;">About me:</h2>
+          <p style="font-size: 18px; line-height: 1.6; text-align: center;">{{ user.bio }}</p>
+        {% endif %}
       </div>
     </div>
   </div>
 </section>
+
+<section id="projects">
+  <div class="mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        {% if projects %}
+          <h1 class="text-center mb-5">Projects</h1>
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+            {% for project in projects %}
+              <div class="col">
+                <div class="card project-card h-100">
+                  <div class="card-body">
+                    <div class="project-image">
+                      {% if project.image and project.image.url %}
+                        <img src="{{ project.image.url }}" alt="{{ project.title }}" class="img-fluid mb-3">
+                      {% else %}
+                        <div class="placeholder-image mb-3"></div>
+                      {% endif %}
+                    </div>
+                    <div class="project-details">
+                      <h5 class="card-title">{{ project.title }}</h5>
+                      <p class="card-text">{{ project.description }}</p>
+                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#projectModal{{ project.id }}">
+                        View details
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Project Modal -->
+              <div class="modal fade" id="projectModal{{ project.id }}" tabindex="-1" aria-labelledby="projectModal{{ project.id }}Label" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="projectModal{{ project.id }}Label">{{ project.title }}</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      {% if project.image and project.image.url %}
+                        <img class="img-fluid mb-3" src="{{ project.image.url }}" alt="{{ project.title }}">
+                      {% else %}
+                        <div class="placeholder-image mb-3"></div>
+                      {% endif %}
+                      <p>{{ project.description }}</p>
+                      {% if project.link %}
+                        <p><a href="{{ project.link }}" target="_blank">{{ project.link }}</a></p>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- End Project Modal -->
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-center">No projects added yet.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
 {% endblock %}
 
+{% block footer %}
+<div class="container mt-4">
+  <div class="row">
+    {% if user.home_address %}
+    <p>{{ user.home_address }}</p>
+    {% endif %}
+    <p><a href="mailto:{{ user.email }}">{{ user.email }}</a></p>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function typeWriter(text, i, id) {
+  if (i < text.length) {
+    document.getElementById(id).innerHTML += text.charAt(i);
+    i++;
+    setTimeout(function() { typeWriter(text, i, id) }, 50);
+  }
+}
+document.addEventListener("DOMContentLoaded", function() {
+  var greeting = "Hello";
+  {% if user.name %}
+    greeting += ", I am {{ user.name }}";
+  {% endif %}
+  {% if user.profession %}
+    greeting += ", I am a {{ user.profession }}";
+  {% endif %}
+  typeWriter(greeting, 0, "hero-greeting");
+});
+</script>
+{% endblock %}
 
 {% if object == request.user %}
 <div class="row">

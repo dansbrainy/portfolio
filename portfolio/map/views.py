@@ -4,8 +4,6 @@ from django.views.generic import TemplateView
 
 from portfolio.users.models import User
 
-# from map.models import UserLocation
-
 
 class MapView(LoginRequiredMixin, TemplateView):
     template_name = "map/map.html"
@@ -26,6 +24,13 @@ class MapView(LoginRequiredMixin, TemplateView):
                         "lat": lat,
                         "lng": lng,
                         "url": reverse("users:detail", args=[user_location.pk]),
+                        "profile_picture": user_location.profile_picture.url
+                        if user_location.profile_picture
+                        else "",
+                        "profession": user_location.profession
+                        if user_location.profession
+                        else "",
+                        "bio": user_location.bio if user_location.bio else "",
                     }
                 )
         context["user_data"] = user_data

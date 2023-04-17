@@ -2,7 +2,10 @@ from allauth.account.forms import SignupForm
 from allauth.socialaccount.forms import SignupForm as SocialSignupForm
 from django.contrib.auth import forms as admin_forms
 from django.contrib.auth import get_user_model
+from django.forms.models import inlineformset_factory
 from django.utils.translation import gettext_lazy as _
+from projects.forms import ProjectForm
+from projects.models import Project
 
 User = get_user_model()
 
@@ -40,3 +43,13 @@ class UserSocialSignupForm(SocialSignupForm):
     Default fields will be added automatically.
     See UserSignupForm otherwise.
     """
+
+
+ProjectFormSet = inlineformset_factory(
+    User,
+    Project,
+    form=ProjectForm,
+    fields=["title", "description", "image", "link"],
+    extra=1,
+    can_delete=True,
+)

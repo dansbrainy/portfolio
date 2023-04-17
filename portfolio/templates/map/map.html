@@ -1,22 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<section id="hero-section-map">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 col-md-8 col-sm-12 mx-auto text-center">
+        <h2>All Users Map</h2>
+      </div>
+    </div>
+  <div class="arrow-down"></div>
+</section>
 
-<div class="container">
-  <h2>All Users Map</h2>
-  <hr>
-  {% if user_data %}
-    <div id="map" style="height: 500px;"></div>
-    <ul>
-      {% for user in user_data %}
-        <li>{{ user.name }} ({{ user.lat }}, {{ user.lng }})</li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>No user locations found.</p>
-  {% endif %}
-</div>
+<section id="map-section">
+  <div class="container-fluid">
 
+    {% if user_data %}
+      <div id="map" class="my-2" style="height: 500px; width: 100%;"></div>
+    {% else %}
+      <p>No user locations found.</p>
+    {% endif %}
+  </div>
+</section>
 {% endblock %}
 
 {% block scripts %}
@@ -39,8 +43,20 @@
     // Add markers for each user
     var markers = [];
     {% for user in user_data %}
+      var popupContent = '<div class="user-card">'
+      if ("{{ user.profile_picture }}") {
+        popupContent += '<img src="{{ user.profile_picture }}" alt="{{ user.name }}" class="profile-image">'
+      }
+      popupContent += '<h5><a href="{{ user.url }}">{{ user.name }}</a></h5>'
+      if ("{{ user.profession }}") {
+        popupContent += '<p>{{ user.profession }}</p>'
+      }
+      if ("{{ user.bio }}") {
+        popupContent += '<p>{{ user.bio }}</p>'
+      }
+      popupContent += '</div>'
       var marker = L.marker([{{ user.lat }}, {{ user.lng }}])
-        .bindPopup('<h5><a href="{{ user.url }}">{{ user.name }}</a></h5>')
+        .bindPopup(popupContent)
         .addTo(map);
       markers.push(marker);
     {% endfor %}

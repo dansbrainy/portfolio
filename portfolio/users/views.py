@@ -1,12 +1,17 @@
+import time
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.gis.geos import Point
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail
+from django.forms import inlineformset_factory
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView, View
+from geopy.exc import GeocoderTimedOut
+from projects.models import Project
 
 User = get_user_model()
 
@@ -15,6 +20,14 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
     slug_field = "username"
     slug_url_kwarg = "username"
+    context_object_name = "user"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.object
+        projects = Project.objects.filter(user=user)
+        context["projects"] = projects
+        return context
 
 
 user_detail_view = UserDetailView.as_view()
@@ -26,13 +39,29 @@ class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         "name",
         "home_address",
         "phone_number",
-        "location",
+        "profession",
         "profile_picture",
         "bio",
     ]
     success_message = _("Information successfully updated")
 
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        if self.request.POST:
+            data["project_formset"] = ProjectFormSet(
+                self.request.POST, self.request.FILES, instance=self.object
+            )
+        else:
+            data["project_formset"] = ProjectFormSet(instance=self.object)
+        return data
+
     def form_valid(self, form):
+        project_formset = ProjectFormSet(
+            self.request.POST, self.request.FILES, instance=self.object
+        )
+        if project_formset.is_valid():
+            project_formset.save()
+
         # Set the location field based on the home address field
         address = form.cleaned_data.get("home_address")
         if address:
@@ -42,7 +71,20 @@ class UserUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             from geopy.geocoders import Nominatim
 
             geolocator = Nominatim(user_agent="portfolio")
-            location = geolocator.geocode(address)
+            location = None
+            retries = 3
+            backoff = 1
+            while retries > 0:
+                try:
+                    location = geolocator.geocode(address, timeout=10)
+                    break
+                except (GeocoderTimedOut, ConnectionError):
+                    retries -= 1
+                    if retries == 0:
+                        # If all retries fail, raise an exception
+                        raise
+                    time.sleep(backoff)
+                    backoff *= 2
             if location:
                 point = Point(location.longitude, location.latitude)
                 form.instance.location = point
@@ -85,3 +127,7 @@ class SendEmailView(View):
 
 
 send_email_view = SendEmailView.as_view()
+
+ProjectFormSet = inlineformset_factory(
+    User, Project, fields=("title", "description", "image", "link")
+)

@@ -30,6 +30,9 @@ class User(AbstractUser):
     )
     bio = models.TextField(_("About Me"), blank=True, max_length=1000)
     profession = models.CharField(_("Profession"), blank=True, max_length=40)
+    projects = models.ManyToManyField(
+        "projects.Project", blank=True, related_name="projects"
+    )
 
     def save(self, *args, **kwargs):
         """

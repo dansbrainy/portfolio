@@ -3,17 +3,28 @@ python:
   - "3.10"
 services:
   - postgresql
+
 addons:
   postgresql: "14"
+  apt:
+    packages:
+      - gdal-bin
+      - libgdal-dev
 env:
   global:
-    - DJANGO_SETTINGS_MODULE=portfolio.settings.test
+    - DJANGO_SETTINGS_MODULE=portfolio.config.settings.test
     - GDAL_LIBRARY_PATH=/usr/lib/libgdal.so
+
 install:
   - sudo apt-get update
   - sudo apt-get install -y binutils libproj-dev gdal-bin
   - pip install -r requirements/local.txt
+
 before_script:
-  - psql -c 'create database portfolio_test;' -U postgres
+  - psql -c 'create database portfolio;' -U postgres
+  - psql -U postgres -c "create extension postgis"
+  - gdalinfo --version
+
 script:
-  -
+  - mypy portfolio
+  - pytest

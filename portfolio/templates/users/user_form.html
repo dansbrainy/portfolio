@@ -27,6 +27,8 @@
           <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form|crispy }}
+            <h2>Projects</h2>
+            <hr/>
             {{ project_formset.management_form|crispy }}
             {% for project_form in project_formset.forms %}
               <div class="card mb-4 shadow-sm">

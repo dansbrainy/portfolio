@@ -75,7 +75,7 @@
 }
 
 /* Home */
-#home-reho {
+#home-hero {
   position: relative;
   background-image: url('/static/images/home_hero.jpg');
   background-size: cover;
@@ -278,19 +278,6 @@ text-align: center !important;
 .profile-image {
   max-width: 10rem;
   display: block;
-}
-
-#map-hero-section {
-  position: relative;
-  height: 100vh;
-  /* background-image: url('/static/images/hero.jpg'); */
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin-top: 4rem;
 }
 
 /* Footer */

@@ -8,16 +8,19 @@ addons:
   postgresql: "14"
   apt:
     packages:
+      - postgresql-14-postgis-3
       - gdal-bin
       - libgdal-dev
+
 env:
   global:
     - DJANGO_SETTINGS_MODULE=portfolio.config.settings.test
     - GDAL_LIBRARY_PATH=/usr/lib/libgdal.so
 
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get -qq update; fi
+
 install:
-  - sudo apt-get update
-  - sudo apt-get install -y binutils libproj-dev gdal-bin
   - pip install -r requirements/local.txt
 
 before_script:

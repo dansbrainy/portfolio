@@ -46,7 +46,7 @@ Moved to [settings](http://cookiecutter-django.readthedocs.io/en/latest/settings
 - Clone the repository from Github.
 - Create a virtual environment and activate it.
 - Install the required packages using the command pip install -r requirements/local.txt.
-- Create a PostgreSQL database and update the DATABASES configuration in settings.py.
+- Create a PostgreSQL database and update the DATABASES configuration in config/settings/local.py or .env file.
 - Run the command python manage.py migrate to migrate the database.
 - Create a super user using the command python manage.py createsuperuser.
 - Run the command python manage.py runserver to start the development server.

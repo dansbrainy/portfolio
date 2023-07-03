@@ -22,7 +22,7 @@ decorator==5.1.1
 defusedxml==0.7.1
 dill==0.3.6
 distlib==0.3.6
-Django==4.1.8
+Django==4.2.3
 django-allauth==0.54.0
 django-auditlog==2.2.2
 django-coverage-plugin==3.0.0
